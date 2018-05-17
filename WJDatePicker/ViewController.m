@@ -28,7 +28,10 @@
     pickerView.minimunDate = [formatter dateFromString:@"2000-01"];
     pickerView.maximumDate = [formatter dateFromString:@"2018-05"];
     pickerView.timeStr = @"2015-07";
+    __weak typeof(self) weakSelf = self;
     pickerView.clickReturn = ^(NSInteger tag, NSString *timeStr) {
+        [weakSelf packUp];  // 收起页面
+
         if (0 == tag) { //  取消
             NSLog(@"cancel");
         } else { //  确认
@@ -38,6 +41,50 @@
     };
     [self.view addSubview:pickerView];
 }
+
+#pragma mark - 动画
+
+/**
+ 展开日期选择picker
+ */
+
+- (IBAction)expand:(id)sender {
+    self.pickerView.hidden = NO;
+    [self showSpringAnimationWithDuration:0.3 animations:^{
+        self.pickerView.alpha = 1.f;
+    } completion:^{
+        
+    }];
+}
+
+
+/**
+ 收起日期选择picker
+ */
+- (void)packUp {
+    [self showSpringAnimationWithDuration:0.3 animations:^{
+        self.pickerView.alpha = 0.f;
+    } completion:^{
+        self.pickerView.hidden = YES;
+    }];
+}
+
+// 动画
+- (void)showSpringAnimationWithDuration:(CGFloat)duration
+                             animations:(void (^)(void))animations
+                             completion:(void (^)(void))completion{
+    [UIView animateWithDuration:duration delay:0 usingSpringWithDamping:.8 initialSpringVelocity:5 options:UIViewAnimationOptionCurveEaseOut animations:^{
+        
+        if (animations) {
+            animations();
+        }
+    } completion:^(BOOL finished) {
+        if (completion) {
+            completion();
+        }
+    }];
+}
+
 
 
 - (void)didReceiveMemoryWarning {

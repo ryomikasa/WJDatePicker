@@ -57,6 +57,7 @@
 {
     self = [super init];
     if (self) {
+        self.hidden = YES;
         self.pickerType = type;
         NSInteger height = DATEPICKERHEIGHT + BTNHEIGHT;
         self.frame = CGRectMake(0, kScreenHeight - height - kTabbarHeight, kScreenWidth, height);
@@ -298,7 +299,7 @@
 }
 
 /**
- 设置datePicker显示的年的取值区间(当前月份-1之后的年)
+ 设置datePicker显示的年的取值区间
  */
 - (void)configDateYearRange
 {
